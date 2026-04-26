@@ -1,6 +1,5 @@
 using Unity.Cinemachine;
 using UnityEngine;
-using static System.TimeZoneInfo;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,7 @@ public class TimeTravel : MonoBehaviour
     private PlayerInputSystem playerInputSys; //input system reference
     public static Timeline CurrentTime = Timeline.Past;
     public GameObject Player;
+    [SerializeField] private GameObject PlayerHoldPos;
     public CinemachineCamera cineCam;
     [SerializeField] private float WaitTime = 0.1f;
 
@@ -71,24 +71,23 @@ public class TimeTravel : MonoBehaviour
         Cubes = GameObject.FindGameObjectsWithTag("MoveableObj").ToList();
         foreach(var c in Cubes)
         {
-            if(c.transform.parent == null)
+            if(c.transform.parent != PlayerHoldPos.transform)
             {
                 c.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             }
-            if(c.transform.position.y > -30)
+
+            if (c.transform.position.y > -30)
             {
-                if(!PastCubes.Contains(c))
+                if (!PastCubes.Contains(c))
                 {
                     PastCubes.Add(c);
                 }
-                if(FutureCubes.Contains(c))
+                if (FutureCubes.Contains(c))
                 {
                     FutureCubes.Remove(c);
-
-                    Instantiate(c, (c.transform.position + minusPos), Quaternion.identity);
                 }
             }
-            else if(c.transform.position.y < -30)
+            else if (c.transform.position.y < -30)
             {
                 if (!FutureCubes.Contains(c))
                 {

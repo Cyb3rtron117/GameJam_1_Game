@@ -39,7 +39,7 @@ public class HoldObj : MonoBehaviour
 
         if(playerInputSys.Player.Grab.IsPressed() && grabbedObj != null)
         {
-            if (grabbedObj.transform.parent == null)
+            if (grabbedObj.transform.parent != holdPos.transform)
             {
                 grabbedObj.transform.SetParent(holdPos.transform);
                 grabbedObj.transform.localScale = Vector3.one;
